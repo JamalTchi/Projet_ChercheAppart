@@ -7,6 +7,7 @@ import {
   Pressable,
   ScrollView,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -103,7 +104,14 @@ export const ClientFormScreen = ({ navigation }: Props) => {
             contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 24 }}
             showsVerticalScrollIndicator={false}
           >
-            <Text className="mt-4 text-2xl font-bold text-textPrimary">Publier ma recherche</Text>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              className="mt-2 mb-4 flex-row items-center"
+            >
+              <Text className="text-2xl text-primary">←</Text>
+              <Text className="ml-2 text-base text-primary font-medium">Retour</Text>
+            </TouchableOpacity>
+            <Text className="text-2xl font-bold text-textPrimary">Publier ma recherche</Text>
             <Text className="mt-2 text-base text-textSecondary">
               Donnez le plus d’informations possible pour aider les chasseurs à vous contacter.
             </Text>

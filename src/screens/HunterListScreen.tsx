@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { FlatList, Pressable, Text, View } from 'react-native';
+import { FlatList, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMemo } from 'react';
 import { Button } from '../components/Button';
@@ -20,7 +20,14 @@ export const HunterListScreen = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F3F4F6' }}>
       <View className="flex-1 bg-background">
-        <View className="flex-row items-center justify-between px-5 pt-4">
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          className="px-5 pt-4 pb-2 flex-row items-center"
+        >
+          <Text className="text-2xl text-primary">←</Text>
+          <Text className="ml-2 text-base text-primary font-medium">Retour</Text>
+        </TouchableOpacity>
+        <View className="flex-row items-center justify-between px-5 pt-2">
           <Text className="text-2xl font-bold text-textPrimary">Demandes de location</Text>
           <Button
             label="Déposer une demande"
