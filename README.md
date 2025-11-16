@@ -75,10 +75,22 @@ Application déployée sur Vercel : [https://projet-cherche-appart.vercel.app](h
 - [ ] Chat entre clients et hunters
 - [ ] Profils utilisateurs enrichis
 
+## ⚠️ Avertissement de Sécurité
+
+Ce projet nécessite des variables d'environnement Supabase pour fonctionner. Les clés ne sont **pas incluses** dans ce repository pour des raisons de sécurité.
+
 ## 📄 License
 
-Projet personnel - Non ouvert aux contributions pour le moment
+**© 2025 Jamal - Tous droits réservés**
+
+Ce code est protégé par copyright. Toute reproduction, distribution ou utilisation commerciale est interdite sans autorisation écrite. Le code est visible à des fins éducatives uniquement.
+
+Voir [LICENSE](LICENSE) pour plus de détails.
 
 ## 👨‍💻 Auteur
 
 **Jamal** - [JamalTchi](https://github.com/JamalTchi)
+
+---
+
+*Ce projet est en développement actif. Non ouvert aux contributions externes.*
