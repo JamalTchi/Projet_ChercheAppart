@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Linking, ScrollView, Text, View } from 'react-native';
+import { Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../components/Button';
 import { useRequests } from '../context/RequestsContext';
@@ -38,8 +38,19 @@ export const RequestDetailScreen = ({ route, navigation }: Props) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F3F4F6' }}>
       <View className="flex-1 bg-background">
+        {/* Bouton retour */}
+        <View className="px-5 pt-4">
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            className="flex-row items-center"
+          >
+            <Text className="text-2xl text-primary">←</Text>
+            <Text className="ml-2 text-base font-semibold text-primary">Retour</Text>
+          </TouchableOpacity>
+        </View>
+
         <ScrollView
-          contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 120 }}
+          contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 120 }}
           showsVerticalScrollIndicator={false}
         >
           <View className="rounded-3xl bg-white p-6 shadow-sm">
