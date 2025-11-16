@@ -1,64 +1,70 @@
-import { ReactNode, createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { supabase } from '../lib/supabase';
 
 export type Request = {
   id: string;
   city: string;
   budget: string;
-  type?: string;
-  furnished?: string;
-  moveInDate?: string;
-  description?: string;
+  type?: string | null;
+  furnished?: string | null;
+  move_in_date?: string | null;
+  description?: string | null;
   email: string;
-  createdAt: string;
+  created_at: string;
 };
 
-type RequestInput = Omit<Request, 'id' | 'createdAt'>;
+type RequestInput = Omit<Request, 'id' | 'created_at'>;
 
 type RequestsContextValue = {
   requests: Request[];
-  addRequest: (payload: RequestInput) => void;
+  addRequest: (payload: RequestInput) => Promise<void>;
   getRequestById: (id: string) => Request | undefined;
+  loading: boolean;
 };
-
-const initialRequests: Request[] = [
-  {
-    id: 'initial-1',
-    city: 'Paris',
-    budget: '1500',
-    type: 'T2',
-    furnished: 'Meublé',
-    moveInDate: 'Janvier 2026',
-    description: 'Couple de jeunes actifs recherchant un appartement lumineux proche des transports.',
-    email: 'marie.dupont@example.com',
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 'initial-2',
-    city: 'Lyon',
-    budget: '1200',
-    type: 'T3',
-    furnished: 'Non meublé',
-    moveInDate: 'Février 2026',
-    description: 'Famille avec un enfant, souhaite un quartier calme avec écoles à proximité.',
-    email: 'pierre.martin@example.com',
-    createdAt: new Date().toISOString(),
-  },
-];
 
 const RequestsContext = createContext<RequestsContextValue | undefined>(undefined);
 
 export const RequestsProvider = ({ children }: { children: ReactNode }) => {
-  const [requests, setRequests] = useState<Request[]>(initialRequests);
+  const [requests, setRequests] = useState<Request[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const addRequest = useCallback((payload: RequestInput) => {
-    setRequests((prev) => [
-      {
-        ...payload,
-        id: `request-${Date.now()}`,
-        createdAt: new Date().toISOString(),
-      },
-      ...prev,
-    ]);
+  // Charger les demandes au démarrage
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  const fetchRequests = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setRequests(data || []);
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addRequest = useCallback(async (payload: RequestInput) => {
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .insert([payload])
+        .select()
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setRequests((prev) => [data, ...prev]);
+      }
+    } catch (error) {
+      console.error('Error adding request:', error);
+      throw error;
+    }
   }, []);
 
   const getRequestById = useCallback(
@@ -71,8 +77,9 @@ export const RequestsProvider = ({ children }: { children: ReactNode }) => {
       requests,
       addRequest,
       getRequestById,
+      loading,
     }),
-    [requests, addRequest, getRequestById],
+    [requests, addRequest, getRequestById, loading],
   );
 
   return <RequestsContext.Provider value={value}>{children}</RequestsContext.Provider>;

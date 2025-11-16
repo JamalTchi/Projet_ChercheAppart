@@ -7,7 +7,7 @@ import type { RootStackParamList } from '../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RequestDetail'>;
 
-const formatValue = (value?: string) => value ?? 'Non précisé';
+const formatValue = (value?: string | null) => value ?? 'Non précisé';
 
 export const RequestDetailScreen = ({ route, navigation }: Props) => {
   const { getRequestById } = useRequests();
@@ -47,26 +47,26 @@ export const RequestDetailScreen = ({ route, navigation }: Props) => {
               {request.city} · {request.budget} €
             </Text>
             <Text className="mt-2 text-sm text-textSecondary">
-              Publié le {new Date(request.createdAt).toLocaleDateString('fr-FR')}
+              Publié le {new Date(request.created_at).toLocaleDateString('fr-FR')}
             </Text>
 
             <View className="mt-6 space-y-4">
               <View>
                 <Text className="text-xs uppercase tracking-wide text-textSecondary">Type</Text>
-                <Text className="mt-1 text-base text-textPrimary">{formatValue(request.type)}</Text>
+                <Text className="mt-1 text-base text-textPrimary">{formatValue(request.type || undefined)}</Text>
               </View>
               <View>
                 <Text className="text-xs uppercase tracking-wide text-textSecondary">Meublé</Text>
                 <Text className="mt-1 text-base text-textPrimary">
-                  {formatValue(request.furnished)}
+                  {formatValue(request.furnished || undefined)}
                 </Text>
               </View>
               <View>
                 <Text className="text-xs uppercase tracking-wide text-textSecondary">
-                  Date d’entrée souhaitée
+                  Date d'entrée souhaitée
                 </Text>
                 <Text className="mt-1 text-base text-textPrimary">
-                  {formatValue(request.moveInDate)}
+                  {formatValue(request.move_in_date || undefined)}
                 </Text>
               </View>
               <View>
@@ -74,7 +74,7 @@ export const RequestDetailScreen = ({ route, navigation }: Props) => {
                   Description
                 </Text>
                 <Text className="mt-1 text-base leading-6 text-textPrimary">
-                  {formatValue(request.description)}
+                  {formatValue(request.description || undefined)}
                 </Text>
               </View>
               <View>

@@ -56,40 +56,44 @@ export const ClientFormScreen = ({ navigation }: Props) => {
     return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate()) {
       return;
     }
 
-    addRequest({
-      city: city.trim(),
-      budget: budget.trim(),
-      type: type.trim() || undefined,
-      furnished,
-      moveInDate: moveInDate.trim() || undefined,
-      description: description.trim() || undefined,
-      email: email.trim(),
-    });
+    try {
+      await addRequest({
+        city: city.trim(),
+        budget: budget.trim(),
+        type: type.trim() || null,
+        furnished: furnished || null,
+        move_in_date: moveInDate.trim() || null,
+        description: description.trim() || null,
+        email: email.trim(),
+      });
 
-    setCity('');
-    setBudget('');
-    setType('');
-    setFurnished(undefined);
-    setMoveInDate('');
-    setDescription('');
-    setEmail('');
-    setErrors({});
+      setCity('');
+      setBudget('');
+      setType('');
+      setFurnished(undefined);
+      setMoveInDate('');
+      setDescription('');
+      setEmail('');
+      setErrors({});
 
-    Alert.alert(
-      'Demande publiée',
-      'Votre recherche est maintenant visible par les chasseurs d’appart.',
-      [
-        {
-          text: 'Voir les demandes',
-          onPress: () => navigation.navigate('HunterList'),
-        },
-      ],
-    );
+      Alert.alert(
+        'Demande publiée',
+        'Votre recherche est maintenant visible par les chasseurs d\'appart.',
+        [
+          {
+            text: 'Voir les demandes',
+            onPress: () => navigation.navigate('HunterList'),
+          },
+        ]
+      );
+    } catch (error) {
+      Alert.alert('Erreur', 'Impossible de publier votre demande. Réessayez plus tard.');
+    }
   };
 
   return (

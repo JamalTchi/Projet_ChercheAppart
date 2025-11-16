@@ -10,12 +10,22 @@ import type { RootStackParamList } from '../navigation/types';
 type Props = NativeStackScreenProps<RootStackParamList, 'HunterList'>;
 
 export const HunterListScreen = ({ navigation }: Props) => {
-  const { requests } = useRequests();
+  const { requests, loading } = useRequests();
 
   const sortedRequests = useMemo(
-    () => [...requests].sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    () => [...requests].sort((a, b) => b.created_at.localeCompare(a.created_at)),
     [requests],
   );
+
+  if (loading) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#F3F4F6' }}>
+        <View className="flex-1 items-center justify-center bg-background">
+          <Text className="text-base text-textSecondary">Chargement...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F3F4F6' }}>
